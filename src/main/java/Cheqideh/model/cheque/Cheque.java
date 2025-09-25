@@ -1,0 +1,24 @@
+package Cheqideh.model.cheque;
+
+import Cheqideh.model.account.Account;
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Entity
+public class Cheque {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String number;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account drawer;
+
+    private BigDecimal amount;
+    private LocalDate issueDate;
+    private ChequeStatus status;
+}
