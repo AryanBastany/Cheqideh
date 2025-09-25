@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements CrudService<Account, Long>{
+public class AccountCrudService implements CrudService<Account, Long>{
 
     private final AccountRepository accountRepo;
 

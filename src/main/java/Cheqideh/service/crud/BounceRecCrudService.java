@@ -5,9 +5,11 @@ import Cheqideh.repository.BounceRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
-public class BounceRecordService implements CrudService<BounceRecord, Long>{
+public class BounceRecCrudService implements CrudService<BounceRecord, Long>{
         private final BounceRecordRepository bounceRecRepo;
 
         @Override
@@ -26,5 +28,9 @@ public class BounceRecordService implements CrudService<BounceRecord, Long>{
         public BounceRecord findById(Long id) {
             // TODO: validation
             return bounceRecRepo.findById(id).orElse(null);
+        }
+
+        public long countBounceDateAfter(Long drawerId, LocalDate date) {
+            return bounceRecRepo.countByDrawerIdAndBounceDateAfter(drawerId, date);
         }
 }

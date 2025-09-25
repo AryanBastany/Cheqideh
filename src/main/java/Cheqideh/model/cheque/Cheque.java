@@ -2,10 +2,16 @@ package Cheqideh.model.cheque;
 
 import Cheqideh.model.account.Account;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@Setter
+@Getter
 @Entity
 public class Cheque {
     @Id

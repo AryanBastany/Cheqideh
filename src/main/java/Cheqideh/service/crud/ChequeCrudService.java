@@ -1,15 +1,13 @@
 package Cheqideh.service.crud;
 
-import Cheqideh.model.BounceRecord;
 import Cheqideh.model.cheque.Cheque;
-import Cheqideh.repository.BounceRecordRepository;
 import Cheqideh.repository.ChequeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ChequeService implements CrudService<Cheque, Long>{
+public class ChequeCrudService implements CrudService<Cheque, Long>{
         private final ChequeRepository chequeRepo;
 
         @Override
