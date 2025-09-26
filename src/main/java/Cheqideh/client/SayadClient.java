@@ -13,18 +13,18 @@ public class SayadClient {
     private final RestTemplate restTemplate;
     private final String sayadBaseUrl;
 
-    public SayadClient(@Value("${sayad.api.base-url}") String sayadBaseUrl) {
-        this.restTemplate = new RestTemplate();
+    public SayadClient(RestTemplate restTemplate, @Value("${sayad.api.base-url}") String sayadBaseUrl) {
+        this.restTemplate = restTemplate;
         this.sayadBaseUrl = sayadBaseUrl;
     }
 
-    public void registerCheque() {
+    public ResponseEntity<Void> registerCheque() {
         String url = sayadBaseUrl + "/register";
-            ResponseEntity<Void> response = restTemplate.postForEntity(url, null, Void.class);
+        return restTemplate.postForEntity(url, null, Void.class);
     }
 
-    public void presentCheque() {
+    public ResponseEntity<Void> presentCheque() {
         String url = sayadBaseUrl + "/present";
-            restTemplate.postForEntity(url, null, Void.class);
+        return restTemplate.postForEntity(url, null, Void.class);
     }
 }
