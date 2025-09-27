@@ -79,7 +79,7 @@ class CheqidehIntegrationTest {
 
         long chequeAmount = TestUtils.generateRandomLong(1L, initialBalance + 1);
         long expectedFinalBalance = initialBalance - chequeAmount;
-        IssueChequeRequest issueRequest = TestUtils.createIssueRequest(testAccount.getId(), BigDecimal.valueOf(chequeAmount));
+        IssueChequeRequest issueRequest = TestUtils.createIssueRequest(testAccount.getAccId(), BigDecimal.valueOf(chequeAmount));
 
         long chequeId = performIssueCheque(issueRequest);
         performPresentCheque(chequeId)
@@ -88,7 +88,7 @@ class CheqidehIntegrationTest {
         var paidCheque = chequeCrudService.findById(chequeId);
         assertEquals(ChequeStatus.PAID, paidCheque.getStatus());
 
-        var updatedAccount = accountCrudService.findById(testAccount.getId());
+        var updatedAccount = accountCrudService.findById(testAccount.getAccId());
         assertEquals(0, new BigDecimal(expectedFinalBalance).compareTo(updatedAccount.getBalance()));
     }
 
@@ -96,7 +96,7 @@ class CheqidehIntegrationTest {
     @DisplayName("presentCheque should fail when funds are insufficient")
     void presentCheque_Fails_IfFundsAreInsufficient() throws Exception {
         long validChequeAmount = TestUtils.generateRandomLong(1L, testAccount.getBalance().longValue());
-        IssueChequeRequest issueRequest = TestUtils.createIssueRequest(testAccount.getId(), BigDecimal.valueOf(validChequeAmount));
+        IssueChequeRequest issueRequest = TestUtils.createIssueRequest(testAccount.getAccId(), BigDecimal.valueOf(validChequeAmount));
         long chequeId = performIssueCheque(issueRequest);
 
         BigDecimal insufficientBalance = BigDecimal.valueOf(TestUtils.generateRandomLong(0L, validChequeAmount));
@@ -116,7 +116,7 @@ class CheqidehIntegrationTest {
 
         List<Long> chequeIds = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            IssueChequeRequest request = TestUtils.createIssueRequest(testAccount.getId(), BigDecimal.valueOf(100_000));
+            IssueChequeRequest request = TestUtils.createIssueRequest(testAccount.getAccId(), BigDecimal.valueOf(100_000));
             chequeIds.add(performIssueCheque(request));
         }
 
@@ -128,7 +128,7 @@ class CheqidehIntegrationTest {
                     .andExpect(status().isConflict());
         }
 
-        var blockedAccount = accountCrudService.findById(testAccount.getId());
+        var blockedAccount = accountCrudService.findById(testAccount.getAccId());
         assertEquals(AccountStatus.BLOCKED, blockedAccount.getStatus());
     }
 

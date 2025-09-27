@@ -18,14 +18,14 @@ public class AccountCrudService implements CrudService<Account, Long>{
     }
 
     @Override
-    public void removeById(Long id) {
+    public void removeById(Long accId) {
         // TODO: validation
-        accountRepo.findById(id).ifPresent(accountRepo::delete);
+        accountRepo.findByAccId(accId).ifPresent(accountRepo::delete);
     }
 
     @Override
-    public Account findById(Long id) {
+    public Account findById(Long accId) {
         // TODO: validation
-        return accountRepo.findById(id).orElse(null);
+        return accountRepo.findByAccId(accId).orElse(null);
     }
 }

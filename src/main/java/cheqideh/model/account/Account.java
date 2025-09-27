@@ -16,6 +16,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long accId;
+
     private BigDecimal balance;
 
     private AccountStatus status;

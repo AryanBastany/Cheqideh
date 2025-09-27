@@ -18,6 +18,7 @@ public class TestUtils {
         Random random = new Random();
         Account account = new Account();
         account.setId(generateRandomLong(0L));
+        account.setAccId(generateRandomLong(0L));
         account.setBalance(BigDecimal.valueOf(generateRandomLong(0L)));
 
         AccountStatus[] statuses = AccountStatus.values();
