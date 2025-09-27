@@ -1,15 +1,13 @@
 package cheqideh;
 
-import Cheqideh.client.SayadClient;
-import cheqideh.TestUtils;
-import Cheqideh.config.JwtUtil;
-import Cheqideh.dto.request.IssueChequeRequest;
-import Cheqideh.model.account.Account;
-import Cheqideh.model.account.AccountStatus;
-import Cheqideh.model.cheque.ChequeStatus;
-import Cheqideh.service.crud.AccountCrudService;
-import Cheqideh.service.crud.ChequeCrudService;
-import com.fasterxml.jackson.databind.JsonNode;
+import cheqideh.client.SayadClient;
+import cheqideh.config.JwtUtil;
+import cheqideh.dto.request.IssueChequeRequest;
+import cheqideh.model.account.Account;
+import cheqideh.model.account.AccountStatus;
+import cheqideh.model.cheque.ChequeStatus;
+import cheqideh.service.crud.AccountCrudService;
+import cheqideh.service.crud.ChequeCrudService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,18 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

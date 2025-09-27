@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+sayad:
+  api:
+    base-url: http://localhost:8081/sayad
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:chequedb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: dbpassword
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2
+
+jwt:
+  secret: F423F458462B48257D45C6A801635294A4093BE5A28A8A1E5D5E61B31346A92D

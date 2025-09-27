@@ -1,0 +1,31 @@
+package cheqideh.service.crud;
+
+import cheqideh.model.account.Account;
+import cheqideh.repository.AccountRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AccountCrudService implements CrudService<Account, Long>{
+
+    private final AccountRepository accountRepo;
+
+    @Override
+    public Account add(Account newAccount) {
+        // TODO: validation
+        return accountRepo.save(newAccount);
+    }
+
+    @Override
+    public void removeById(Long id) {
+        // TODO: validation
+        accountRepo.findById(id).ifPresent(accountRepo::delete);
+    }
+
+    @Override
+    public Account findById(Long id) {
+        // TODO: validation
+        return accountRepo.findById(id).orElse(null);
+    }
+}
