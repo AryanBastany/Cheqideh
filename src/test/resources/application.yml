@@ -6,6 +6,8 @@ sayad:
     base-url: http://localhost:8081/sayad
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     url: jdbc:h2:mem:chequedb
     driverClassName: org.h2.Driver
