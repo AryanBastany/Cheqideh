@@ -1,6 +1,7 @@
 package Cheqideh.service.business;
 
 import Cheqideh.client.SayadClient;
+import Cheqideh.dto.request.IssueChequeRequest;
 import Cheqideh.exception.servicelayer.ChequeBounceException;
 import Cheqideh.model.BounceRecord;
 import Cheqideh.model.account.Account;
@@ -40,6 +41,20 @@ public class ChequeService {
     }
 
     @Transactional
+    public Cheque issueCheque(IssueChequeRequest request) throws AccountNotFoundException {
+        Account drawer = accountCrudService.findById(request.getDrawerId());
+
+        Cheque newCheque = new Cheque();
+        newCheque.setDrawer(drawer);
+        newCheque.setNumber(request.getNumber());
+        newCheque.setAmount(request.getAmount());
+        newCheque.setIssueDate(LocalDate.now());
+        newCheque.setStatus(ChequeStatus.ISSUED);
+
+        return issueCheque(newCheque);
+    }
+
+    @Transactional
     public void presentCheque(Long chequeId) {
         Cheque cheque = chequeCrudService.findById(chequeId);
 
@@ -72,7 +87,7 @@ public class ChequeService {
         chequeCrudService.add(cheque);
 
         BounceRecord bounce = new BounceRecord();
-        bounce.setChequeId(cheque.getId());
+        bounce.setCheque(cheque);
         bounce.setBounceDate(LocalDate.now());
         bounce.setReason("INSUFFICIENT_FUNDS");
 

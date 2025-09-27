@@ -21,7 +21,7 @@ public class Cheque {
     private String number;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "drawer_id", nullable = false)
     private Account drawer;
 
     private BigDecimal amount;

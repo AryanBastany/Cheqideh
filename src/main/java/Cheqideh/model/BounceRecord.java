@@ -1,9 +1,7 @@
 package Cheqideh.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import Cheqideh.model.cheque.Cheque;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -17,7 +15,9 @@ public class BounceRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long chequeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cheque_id", nullable = false)
+    private Cheque cheque;
 
     private LocalDate bounceDate;
     private String reason;

@@ -1,5 +1,7 @@
 package cheqideh;
 
+import Cheqideh.config.JwtUtil;
+import Cheqideh.dto.request.IssueChequeRequest;
 import Cheqideh.model.account.Account;
 import Cheqideh.model.account.AccountStatus;
 import Cheqideh.model.cheque.Cheque;
@@ -7,10 +9,11 @@ import Cheqideh.model.cheque.ChequeStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Utils {
+public class TestUtils {
     public static Account generateRandomAccount() {
         Random random = new Random();
         Account account = new Account();
@@ -52,7 +55,7 @@ public class Utils {
         Cheque cheque = generateRandomCheque(drawer);
 
         long drawerBalance = Long.parseLong(drawer.getBalance().toString());
-        long chequeAmount = Utils.generateRandomLong(0L, drawerBalance + 1);
+        long chequeAmount = TestUtils.generateRandomLong(0L, drawerBalance + 1);
         cheque.setAmount(BigDecimal.valueOf(chequeAmount));
 
         cheque.setIssueDate(LocalDate.now());
@@ -62,7 +65,16 @@ public class Utils {
         return cheque;
     }
 
-    private static String generateRandomString(int length) {
+    public static IssueChequeRequest createIssueRequest(long drawerId, BigDecimal amount) {
+        IssueChequeRequest request = new IssueChequeRequest();
+        request.setDrawerId(drawerId);
+        request.setAmount(amount);
+        request.setNumber(generateRandomString(20));
+
+        return request;
+    }
+
+    public static String generateRandomString(int length) {
         Random random = new Random();
         StringBuilder sb = new StringBuilder(length);
         for(int i = 0; i < length; i++) {
@@ -94,5 +106,9 @@ public class Utils {
     public static Integer generateRandomInt(Integer from, Integer to) {
         Random random = new Random();
         return random.nextInt(from, to);
+    }
+
+    public static String generateTellerToken(JwtUtil jwtUtil) {
+        return jwtUtil.generateToken("teller1", List.of("TELLER"));
     }
 }

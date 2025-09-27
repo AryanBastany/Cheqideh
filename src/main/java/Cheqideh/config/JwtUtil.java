@@ -1,16 +1,16 @@
 package Cheqideh.config;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
-import java.util.function.Function;
+import java.util.List;
 
 @Component
 public class JwtUtil {
@@ -26,38 +26,43 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public String generateToken(String username) {
+    public String generateToken(String username, List<String> roles) {
         return Jwts.builder()
                 .subject(username)
+                .claim("roles", roles)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hours
                 .signWith(key)
                 .compact();
     }
 
-    public boolean isTokenValid(String token, String username) {
-        final String tokenUsername = extractUsername(token);
-        return (tokenUsername.equals(username)) && !isTokenExpired(token);
+    public boolean validate(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
+    public String getUsername(String token) {
+        Claims claims = Jwts.parser()
                 .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+        return claims.getSubject();
+    }
+
+    public List<String> getRoles(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.get("roles", List.class);
     }
 }

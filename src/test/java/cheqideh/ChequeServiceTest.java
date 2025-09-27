@@ -43,9 +43,9 @@ class ChequeServiceTest {
     @Test
     @DisplayName("issueCheque should succeed when all validations pass")
     void issueCheque_IssuesCorrectly_IfEverythingIsCorrect() throws Exception {
-        Account drawer = Utils.generateValidAccount();
+        Account drawer = TestUtils.generateValidAccount();
 
-        Cheque newCheque = Utils.generateValidCheque(drawer);
+        Cheque newCheque = TestUtils.generateValidCheque(drawer);
 
         Cheque result = chequeService.issueCheque(newCheque);
 
@@ -57,12 +57,12 @@ class ChequeServiceTest {
     @Test
     @DisplayName("issueCheque should fail with InsufficientFundsException when balance is too low")
     void issueCheque_Fails_IfBalanceIsInsufficient() {
-        long drawerBalance = Utils.generateRandomLong(0L, Long.MAX_VALUE - 1);
-        Account drawer = Utils.generateValidAccount();
+        long drawerBalance = TestUtils.generateRandomLong(0L, Long.MAX_VALUE - 1);
+        Account drawer = TestUtils.generateValidAccount();
         drawer.setBalance(BigDecimal.valueOf(drawerBalance));
 
-        long chequeAmount = Utils.generateRandomLong(drawerBalance + 1, Long.MAX_VALUE);
-        Cheque newCheque = Utils.generateValidCheque(drawer);
+        long chequeAmount = TestUtils.generateRandomLong(drawerBalance + 1, Long.MAX_VALUE);
+        Cheque newCheque = TestUtils.generateValidCheque(drawer);
         newCheque.setAmount(BigDecimal.valueOf(chequeAmount));
 
 
@@ -76,10 +76,10 @@ class ChequeServiceTest {
     @Test
     @DisplayName("issueCheque should fail with AccountBlockedException when account is blocked")
     void issueCheque_Fails_IfAccountIsBlocked() {
-        Account drawer = Utils.generateValidAccount();
+        Account drawer = TestUtils.generateValidAccount();
         drawer.setStatus(AccountStatus.BLOCKED);
 
-        Cheque newCheque = Utils.generateValidCheque(drawer);
+        Cheque newCheque = TestUtils.generateValidCheque(drawer);
 
         AccountBlockedException thrown = assertThrows(AccountBlockedException.class, () -> {
             chequeService.issueCheque(newCheque);
@@ -91,12 +91,12 @@ class ChequeServiceTest {
     @Test
     @DisplayName("presentCheque should succeed when cheque is valid and funds are sufficient")
     void presentCheque_PresentsCorrectly_IfValidAndSufficientFunds() {
-        long drawerBalance = Utils.generateRandomLong(0L);
-        Account drawer = Utils.generateValidAccount();
+        long drawerBalance = TestUtils.generateRandomLong(1L);
+        Account drawer = TestUtils.generateValidAccount();
         drawer.setBalance(BigDecimal.valueOf(drawerBalance));
 
-        long chequeAmount = Utils.generateRandomLong(0L, drawerBalance + 1);
-        Cheque newCheque = Utils.generateValidCheque(drawer);
+        long chequeAmount = TestUtils.generateRandomLong(1L, drawerBalance + 1);
+        Cheque newCheque = TestUtils.generateValidCheque(drawer);
         newCheque.setAmount(BigDecimal.valueOf(chequeAmount));
 
         when(chequeCrudService.findById(newCheque.getId())).thenReturn(newCheque);
@@ -117,8 +117,8 @@ class ChequeServiceTest {
     @Test
     @DisplayName("presentCheque should fail with ChequeExpiredException when cheque is expired")
     void presentCheque_Fails_IfChequeIsExpired() {
-        Cheque expiredCheque = Utils.generateValidCheque(Utils.generateRandomAccount());
-        expiredCheque.setIssueDate(Utils.generateRandomDate(LocalDate.now().minusYears(10),
+        Cheque expiredCheque = TestUtils.generateValidCheque(TestUtils.generateRandomAccount());
+        expiredCheque.setIssueDate(TestUtils.generateRandomDate(LocalDate.now().minusYears(10),
                 LocalDate.now().minusMonths(6).minusDays(1)));
 
         when(chequeCrudService.findById(expiredCheque.getId())).thenReturn(expiredCheque);
@@ -131,7 +131,7 @@ class ChequeServiceTest {
     @Test
     @DisplayName("presentCheque should fail with ChequeStatusException when status is not ISSUED")
     void presentCheque_Fails_IfChequeStatusIsNotIssued() {
-        Cheque paidCheque = Utils.generateValidCheque(Utils.generateRandomAccount());
+        Cheque paidCheque = TestUtils.generateValidCheque(TestUtils.generateRandomAccount());
         paidCheque.setStatus(ChequeStatus.PAID);
 
         when(chequeCrudService.findById(paidCheque.getId())).thenReturn(paidCheque);
@@ -144,12 +144,12 @@ class ChequeServiceTest {
     @Test
     @DisplayName("presentCheque should BOUNCE and BLOCK account on the 3rd bounce")
     void presentCheque_BouncesAndBlocks_IfInsufficientFundsAndHighBounceCount() {
-        long drawerBalance = Utils.generateRandomLong(0L, Long.MAX_VALUE - 1);
-        Account drawer = Utils.generateValidAccount();
+        long drawerBalance = TestUtils.generateRandomLong(0L, Long.MAX_VALUE - 1);
+        Account drawer = TestUtils.generateValidAccount();
         drawer.setBalance(BigDecimal.valueOf(drawerBalance));
 
-        long chequeAmount = Utils.generateRandomLong(drawerBalance + 1, Long.MAX_VALUE);
-        Cheque cheque = Utils.generateValidCheque(drawer);
+        long chequeAmount = TestUtils.generateRandomLong(drawerBalance + 1, Long.MAX_VALUE);
+        Cheque cheque = TestUtils.generateValidCheque(drawer);
         cheque.setAmount(BigDecimal.valueOf(chequeAmount));
 
         when(chequeCrudService.findById(cheque.getId())).thenReturn(cheque);
@@ -167,12 +167,12 @@ class ChequeServiceTest {
     @Test
     @DisplayName("presentCheque should BOUNCE without blocking when bounce count is low")
     void presentCheque_BouncesWithoutBlocking_IfInsufficientFundsAndLowBounceCount() {
-        long drawerBalance = Utils.generateRandomLong(0L, Long.MAX_VALUE - 1);
-        Account drawer = Utils.generateValidAccount();
+        long drawerBalance = TestUtils.generateRandomLong(0L, Long.MAX_VALUE - 1);
+        Account drawer = TestUtils.generateValidAccount();
         drawer.setBalance(BigDecimal.valueOf(drawerBalance));
 
-        long chequeAmount = Utils.generateRandomLong(drawerBalance + 1, Long.MAX_VALUE);
-        Cheque cheque = Utils.generateValidCheque(drawer);
+        long chequeAmount = TestUtils.generateRandomLong(drawerBalance + 1, Long.MAX_VALUE);
+        Cheque cheque = TestUtils.generateValidCheque(drawer);
         cheque.setAmount(BigDecimal.valueOf(chequeAmount));
 
         when(chequeCrudService.findById(cheque.getId())).thenReturn(cheque);

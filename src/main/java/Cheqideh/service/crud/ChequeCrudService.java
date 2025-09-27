@@ -11,9 +11,9 @@ public class ChequeCrudService implements CrudService<Cheque, Long>{
         private final ChequeRepository chequeRepo;
 
         @Override
-        public void add(Cheque newCheque) {
+        public Cheque add(Cheque newCheque) {
             // TODO: validation
-            chequeRepo.save(newCheque);
+           return chequeRepo.save(newCheque);
         }
 
         @Override

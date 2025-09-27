@@ -12,9 +12,9 @@ public class AccountCrudService implements CrudService<Account, Long>{
     private final AccountRepository accountRepo;
 
     @Override
-    public void add(Account newAccount) {
+    public Account add(Account newAccount) {
         // TODO: validation
-        accountRepo.save(newAccount);
+        return accountRepo.save(newAccount);
     }
 
     @Override

@@ -13,9 +13,9 @@ public class BounceRecCrudService implements CrudService<BounceRecord, Long>{
         private final BounceRecordRepository bounceRecRepo;
 
         @Override
-        public void add(BounceRecord newBounceRec) {
+        public BounceRecord add(BounceRecord newBounceRec) {
             // TODO: validation
-            bounceRecRepo.save(newBounceRec);
+            return bounceRecRepo.save(newBounceRec);
         }
 
         @Override
@@ -31,6 +31,6 @@ public class BounceRecCrudService implements CrudService<BounceRecord, Long>{
         }
 
         public long countBounceDateAfter(Long drawerId, LocalDate date) {
-            return bounceRecRepo.countByDrawerIdAndBounceDateAfter(drawerId, date);
+            return bounceRecRepo.countByCheque_Drawer_IdAndBounceDateAfter(drawerId, date);
         }
 }
