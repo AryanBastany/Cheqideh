@@ -1,6 +1,7 @@
 package cheqideh;
 
 import cheqideh.config.JwtUtil;
+import cheqideh.dto.request.AddAccountRequest;
 import cheqideh.dto.request.IssueChequeRequest;
 import cheqideh.model.account.Account;
 import cheqideh.model.account.AccountStatus;
@@ -71,6 +72,14 @@ public class TestUtils {
         request.setDrawerId(drawerId);
         request.setAmount(amount);
         request.setNumber(generateRandomString(20));
+
+        return request;
+    }
+
+    public static AddAccountRequest createAddAccountRequest(long accId, BigDecimal balance) {
+        AddAccountRequest request = new AddAccountRequest();
+        request.setAccId(accId);
+        request.setBalance(balance);
 
         return request;
     }
