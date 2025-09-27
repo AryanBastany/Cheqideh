@@ -60,13 +60,10 @@ class CheqidehIntegrationTest {
     private SayadClient sayadClient;
 
     private String tellerToken;
-//    private Account testAccount;
 
     @BeforeEach
     void setUp() {
         tellerToken = TestUtils.generateTellerToken(jwtUtil);
-//        testAccount = TestUtils.generateValidAccount();
-//        testAccount = accountCrudService.add(testAccount);
 
         when(sayadClient.registerCheque()).thenReturn(ResponseEntity.ok().build());
         when(sayadClient.presentCheque()).thenReturn(ResponseEntity.ok().build());

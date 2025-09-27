@@ -1,6 +1,7 @@
 package cheqideh.service.business;
 
 import cheqideh.client.SayadClient;
+import cheqideh.dto.request.AddAccountRequest;
 import cheqideh.dto.request.IssueChequeRequest;
 import cheqideh.exception.servicelayer.ChequeBounceException;
 import cheqideh.model.BounceRecord;
@@ -67,6 +68,17 @@ public class ChequeService {
         } else {
             handleBouncedCheque(cheque);
         }
+    }
+
+    @Transactional
+    public Account addAccount(AddAccountRequest request) throws AccountNotFoundException {
+
+        Account newAccount = new Account();
+        newAccount.setAccId(request.getAccId());
+        newAccount.setBalance(request.getBalance());
+        newAccount.setStatus(AccountStatus.ACTIVE);
+
+        return accountCrudService.add(newAccount);
     }
 
     private boolean hasSufficientFunds(Cheque cheque) {
